@@ -23,7 +23,7 @@
         "nodehint": ">0.0.0"
     },
     "dependencies": {
-        "asynch": ">0.2.6"
+        "async": ">0.2.6"
     } 
     "scripts": {
         "test": "nodeunit test/test-controlflow.js"
