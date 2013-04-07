@@ -34,7 +34,7 @@ function ControlFlow () {
     this.createParallel = function () {
 
         // create a new parallel task
-        throw new Error("Not implemented yet method");
+        throw new Error("Not implemented yet method")
     }
 }
 
