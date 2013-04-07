@@ -22,7 +22,7 @@ function ControlFlow () {
     this.createWaterfall = function () {
 
         // create a new waterfall task
-        throw new Error("Not implemented yet method")
+        throw new Error("Not implemented yet method");
     };
 
     /**
@@ -34,8 +34,8 @@ function ControlFlow () {
     this.createParallel = function () {
 
         // create a new parallel task
-        throw new Error("Not implemented yet method")
-    }
+        throw new Error("Not implemented yet method");
+    };
 }
 
 // export the module
