@@ -1,0 +1,31 @@
+{
+    "name": "control-flow",
+    "description": "A module to simply handle control flow in nodejs and avoid bad looking code",
+    "main": "./lib/controlflow",
+    "author": "Simone Potenza simone.potenza@gmail.com",
+    "version": "0.0.1",
+    "repository" : {
+        "type" : "git",
+        "url" : "http://github.com/rewop/control-flow.git"
+    },
+    "bugs" : {
+        "url" : "http://github.com/rewop/control-flow/issues"
+    },
+    "licenses" : [
+        {
+            "type" : "MIT",
+            "url" : "http://github.com/rewop/control-flow/raw/master/LICENSE"
+        }
+    ],
+    "private" : true,
+    "devDependencies": {
+        "nodeunit": ">0.0.0",
+        "nodehint": ">0.0.0"
+    },
+    "dependencies": {
+        "asynch": ">0.2.6"
+    } 
+    "scripts": {
+        "test": "nodeunit test/test-controlflow.js"
+    }
+}
