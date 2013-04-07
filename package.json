@@ -1,7 +1,7 @@
 {
     "name": "control-flow",
     "description": "A module to simply handle control flow in nodejs and avoid bad looking code",
-    "main": "./lib/controlflow",
+    "main": "./controlflow",
     "author": "Simone Potenza simone.potenza@gmail.com",
     "version": "0.0.1",
     "repository" : {
