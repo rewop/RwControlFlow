@@ -5,19 +5,22 @@ var Task = require('./Task.js');
 /**
  * A series task that runs a sequence of async function in series.
  *
- * @class
- * 
+ * @class Series
+ * @constructor
  */
 function Series () {
     
     /**
      * The series
+     * @attribute task
+     * @type {Task}
      */
     var task = new Task();
 
     /**
      * Adds a callback to the task
      *
+     * @method addCallback
      * @param {string} name
      * @param {function} callback
      */
@@ -29,6 +32,8 @@ function Series () {
 
     /**
      * Run the task
+     *
+     * @method run
      */
     this.run = function () {
 
@@ -39,6 +44,7 @@ function Series () {
     /**
      * Register an on finish function.
      * 
+     * @method onFinish
      * @param {function} callback
      */
     this.onFinish = function (callback) {
@@ -50,6 +56,7 @@ function Series () {
     /**
      * Register the function to be called in case of error.
      * 
+     * @method onError
      * @param {function} callback
      */
     this.onError = function (callback) {

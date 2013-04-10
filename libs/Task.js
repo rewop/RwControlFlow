@@ -4,7 +4,7 @@ var asynch = require('async');
 /**
  * Base class for a task. This class should be used only inside the module
  *
- * @class
+ * @class Task
  * @constructor
  */
 function Task () {
@@ -12,31 +12,40 @@ function Task () {
     /**
      * The function to be called when an error occurs in the task
      * 
-     * @attribute {function} onError
+     * @attribute onError
+     * @type {function}
+     * @default function(){}
      */
     var onError = function () {};
 
     /**
      * The function to be called when the task finishes the jobs
      * 
-     * @attribure {function} onFinish
+     * @attribute onFinish
+     * @type {function}
+     * @default function(){}
      */
     var onFinish = function () {};
 
     /**
      * The callbacks of the task
      *
-     * @attribute {object} callbacks
+     * @attribute callbacks
+     * @private
+     * @type        {object}
+     * @default {}
      */
      var callbacks = {};
 
     /**
      * Private helper that creates a callback to wrap a function of the task
      * 
+     * @method makeCallback
+     * @private
      * @param   {function} callback     the callback to add to the task
      * @return  {function}              the wrapper of the callback
      */
-    function makeCallback = function (callback) {
+    function makeCallback (callback) {
 
         // return the wrapper
         return function (err) {
@@ -50,14 +59,16 @@ function Task () {
             // call the callback
             callback.apply(undefined, args);
         };
-    };
+    }
 
     /**
      * Private helper that creates an onfinish function that wraps onfinish
      *
+     * @method makeOnFinish
+     * @private
      * @return  {function}      the wrapped onfinish function
      */
-    function makeOnFinish(err) {
+    function makeOnFinish (err) {
 
         // return the wrapped function
         return function () {
@@ -68,11 +79,12 @@ function Task () {
             // call the onfinish function without the error
             onFinish(arguments[1]);
         };
-    };
+    }
 
     /**
      * Executes the task according to the type
      *
+     * @method run
      * @param {string} type     enumerator: waterfall|parallel
      */
     this.run = function (type) {
@@ -84,18 +96,18 @@ function Task () {
                 break;
 
             case 'parallel':  
-                asynch.waterfall
+                asynch.parallel(callbacks, makeOnFinish(onFinish));
                 break;
 
             default: 
                 throw new Error("Invalid task type to run");
-                break;
-        };
+        }
     };
     
     /**
      * Adds a callback to the list of callback of the task.
      *
+     * @method addCallback
      * @param {string}      name        the name of the callback. Will be used as name of the result
      * @param {function}    callback    the callback to register
      */
@@ -105,7 +117,7 @@ function Task () {
         if (!name || name instanceof Function) throw new Error("Invalid parameters");
 
         // do we have a callback?
-        if (!callback || !(callback instanceof Function) throw new Error("Invalid parameters");
+        if (!callback || !(callback instanceof Function)) throw new Error("Invalid parameters");
 
         // assign the callback to the set of callbacks
         callbacks[name] = makeCallback(callback);
@@ -114,6 +126,7 @@ function Task () {
     /**
      * Register an on finish function.
      * 
+     * @method onFinish
      * @param {function} callback
      */
     this.onFinish = function (callback) {
@@ -128,6 +141,7 @@ function Task () {
     /**
      * Register the function to be called in case of error.
      * 
+     * @method onError
      * @param {function} callback
      */
     this.onError = function (callback) {
@@ -138,7 +152,7 @@ function Task () {
         // register the function
         task.onError(callback);
     };
-};
+}
 
 // export the object
 module.exports = Task;

@@ -28,7 +28,7 @@ function ControlFlow () {
     /**
      * Creates a parallel task object.
      *
-     * @method
+     * @method createParallel
      * @return {Parallel} The object that generates a parallel control flow task
      */
     this.createParallel = function () {
