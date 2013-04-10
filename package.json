@@ -19,8 +19,7 @@
     ],
     "private" : true,
     "devDependencies": {
-        "nodeunit": ">0.0.0",
-        "nodehint": ">0.0.0"
+        "nodeunit": ">0.0.0"
     },
     "dependencies": {
         "async": ">0.2.6"
