@@ -153,4 +153,4 @@ exports.group = {
         // run the task
         task.run();
     }
-}
+};
