@@ -6,6 +6,9 @@
  * @requires    async
  */
 
+// dependencies
+var Series = require("./libs/Series.js");
+
 /**
  * The control flow object that lets create the several kinds of control flow tasks.
  *
@@ -14,15 +17,15 @@
 function ControlFlow () {
 
     /**
-     * Returns a waterfall task object.
+     * Returns a series task object.
      *
-     * @method createWaterfall
-     * @return {Waterfall} The object that generates a waterfall control flow task
+     * @method createSeries
+     * @return {Series} The object that generates a waterfall control flow task
      */
-    this.createWaterfall = function () {
+    this.createSeries = function () {
 
-        // create a new waterfall task
-        throw new Error("Not implemented yet method");
+        // create a new series task
+        return new Series();
     };
 
     /**

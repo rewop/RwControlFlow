@@ -12,6 +12,7 @@ function Series () {
     
     /**
      * The series
+     *
      * @attribute task
      * @type {Task}
      */
@@ -65,3 +66,6 @@ function Series () {
         task.onError(callback);
     };
 }
+
+// export the constructor
+module.exports = Series;

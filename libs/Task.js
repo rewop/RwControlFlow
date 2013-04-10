@@ -1,5 +1,5 @@
 // dependencies
-var asynch = require('async');
+var async = require('async');
 
 /**
  * Base class for a task. This class should be used only inside the module
@@ -38,41 +38,17 @@ function Task () {
      var callbacks = {};
 
     /**
-     * Private helper that creates a callback to wrap a function of the task
-     * 
-     * @method makeCallback
-     * @private
-     * @param   {function} callback     the callback to add to the task
-     * @return  {function}              the wrapper of the callback
-     */
-    function makeCallback (callback) {
-
-        // return the wrapper
-        return function (err) {
-
-            // in case of error, call onError function
-            if (err) return onError(err);
-
-            // remove the error argument that is undefined
-            args.shift();
-            
-            // call the callback
-            callback.apply(undefined, args);
-        };
-    }
-
-    /**
      * Private helper that creates an onfinish function that wraps onfinish
      *
      * @method makeOnFinish
      * @private
      * @return  {function}      the wrapped onfinish function
      */
-    function makeOnFinish (err) {
+    function makeOnFinish () {
 
         // return the wrapped function
-        return function () {
-            
+        return function (err) {
+
             // in case of error, call onError
             if (err)  return onError(err);
             
@@ -91,12 +67,12 @@ function Task () {
 
         // what kind of flow
         switch(type) {
-            case 'waterfall': 
-                async.series(callbacks, makeOnFinish(onFinish));
+            case 'series': 
+                async.series(callbacks, makeOnFinish());
                 break;
 
             case 'parallel':  
-                asynch.parallel(callbacks, makeOnFinish(onFinish));
+                asynch.parallel(callbacks, makeOnFinish());
                 break;
 
             default: 
@@ -120,7 +96,7 @@ function Task () {
         if (!callback || !(callback instanceof Function)) throw new Error("Invalid parameters");
 
         // assign the callback to the set of callbacks
-        callbacks[name] = makeCallback(callback);
+        callbacks[name] = callback;
     };
 
     /**
@@ -135,7 +111,7 @@ function Task () {
         if (!callback || !(callback instanceof Function)) return;
 
         // register the callback
-        task.onFinish(callback);
+        onFinish = callback;
     };
 
     /**
@@ -150,7 +126,7 @@ function Task () {
         if (!callback || !(callback instanceof Function)) return;
 
         // register the function
-        task.onError(callback);
+        onError = callback;
     };
 }
 
