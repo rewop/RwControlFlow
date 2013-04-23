@@ -20,12 +20,24 @@ function ControlFlow () {
      * Returns a series task object.
      *
      * @method createSeries
-     * @return {Series} The object that generates a waterfall control flow task
+     * @return {Series} The object that generates a waterfall series flow task
      */
     this.createSeries = function () {
 
         // create a new series task
         return new Series();
+    };
+
+    /** 
+     * Returns a waterfall task object.
+     *
+     * @method createWaterfall
+     * @return {Waterfall} The object that generates a waterfall control flow task
+     */
+    this.createWaterfall = function () {
+
+        // create a new waterfall task
+        return new Waterfall();
     };
 
     /**

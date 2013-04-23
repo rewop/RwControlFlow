@@ -71,6 +71,10 @@ function Task () {
                 async.series(callbacks, makeOnFinish());
                 break;
 
+            case 'waterfall':
+                async.waterafall(callbacks, makeOnFinish());
+                break;
+                
             case 'parallel':  
                 asynch.parallel(callbacks, makeOnFinish());
                 break;
