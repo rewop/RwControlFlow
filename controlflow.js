@@ -8,6 +8,7 @@
 
 // dependencies
 var Series = require("./libs/Series.js");
+var Waterfall = require("./libs/Waterfall.js");
 
 /**
  * The control flow object that lets create the several kinds of control flow tasks.

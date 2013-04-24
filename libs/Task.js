@@ -1,5 +1,6 @@
 // dependencies
 var async = require('async');
+var Objects = require('RwUtils').Objects;
 
 /**
  * Base class for a task. This class should be used only inside the module
@@ -72,9 +73,9 @@ function Task () {
                 break;
 
             case 'waterfall':
-                async.waterafall(callbacks, makeOnFinish());
+                async.waterfall(Objects.toArray(callbacks), makeOnFinish());
                 break;
-                
+
             case 'parallel':  
                 asynch.parallel(callbacks, makeOnFinish());
                 break;
@@ -132,6 +133,14 @@ function Task () {
         // register the function
         onError = callback;
     };
+
+    /**
+     * Take all the values of an object and return an array of them
+     * @param 
+     */
+    function arrayOfValues (object, deep) {
+
+    }
 }
 
 // export the object
