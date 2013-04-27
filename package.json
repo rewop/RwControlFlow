@@ -1,5 +1,5 @@
 {
-    "name": "control-flow",
+    "name": "RwControlFlow",
     "description": "A module to simply handle control flow in nodejs and avoid bad looking code",
     "main": "./controlflow",
     "author": "Simone Potenza simone.potenza@gmail.com",
@@ -26,6 +26,6 @@
         "RwUtils": "git://github.com/rewop/RwUtils.git"
     },
     "scripts": {
-        "test": "nodeunit test/test-controlflow.js"
+        "test": "nodeunit test/test.js"
     }
 }
