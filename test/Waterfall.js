@@ -5,7 +5,7 @@
 /*global describe:false, it:false*/
 
 // dependencies
-var ControlFlow = require("../controlflow.js");
+var ControlFlow = require("../ControlFlow.js");
 var expect = require("chai").expect;
 
 // a variable to keep track of the processes running

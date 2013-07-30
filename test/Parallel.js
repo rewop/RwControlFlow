@@ -12,14 +12,14 @@ var expect = require("chai").expect;
 var runLog = [];
 var flow;
 
-describe("Series", function () {
+describe("Parallel", function () {
 
     beforeEach(function() {
 
         // set up the test variable
         runLog[0] = runLog[1] = runLog[2] = false;
 
-        // build a new controlflo
+        // build a new controlflow
         flow = new ControlFlow();
     });
 
@@ -28,7 +28,7 @@ describe("Series", function () {
         it("should finish correctly the tasks", function (done) {
 
             // create the series task
-            var task = flow.createSeries();
+            var task = flow.createParallel();
 
             // let's add a first function to the task
             task.addCallback("function1", function(callback) {

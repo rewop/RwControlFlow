@@ -9,6 +9,7 @@
 // dependencies
 var Series = require("./libs/Series.js");
 var Waterfall = require("./libs/Waterfall.js");
+var Parallel = require("./libs/Parallel.js");
 
 /**
  * Initialize module
@@ -54,7 +55,7 @@ function ControlFlow () {
     this.createParallel = function () {
 
         // create a new parallel task
-        throw new Error("Not implemented yet method");
+        return new Parallel();
     };
 }
 
