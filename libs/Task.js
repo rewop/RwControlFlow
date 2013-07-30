@@ -77,7 +77,7 @@ function Task () {
                 break;
 
             case 'parallel':  
-                asynch.parallel(callbacks, makeOnFinish());
+                async.parallel(callbacks, makeOnFinish());
                 break;
 
             default: 
@@ -133,14 +133,6 @@ function Task () {
         // register the function
         onError = callback;
     };
-
-    /**
-     * Take all the values of an object and return an array of them
-     * @param 
-     */
-    function arrayOfValues (object, deep) {
-
-    }
 }
 
 // export the object
