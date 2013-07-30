@@ -12,97 +12,101 @@ var expect = require("chai").expect;
 var runLog = [];
 var flow;
 
-describe("Series", function () {
+describe("Waterfall", function () {
 
-    beforeEach(function() {
+    beforeEach(function () {
 
         // set up the test variable
         runLog[0] = runLog[1] = runLog[2] = false;
 
-        // build a new controlflo
-        flow = new ControlFlow();
+        // build a new controlflow
+        flow =  new ControlFlow();
     });
 
-    describe("#run", function () {
+    describe("#run", function() {
 
-        it("should finish correctly the tasks", function (done) {
+        it("should finish correctly all the tasks", function (done) {
 
-            // create the series task
-            var task = flow.createSeries();
+            // create the task
+            var task = flow.createWaterfall();
 
-            // let's add a first function to the task
+            // add a first function
             task.addCallback("function1", function(callback) {
 
                 // nothing should have run yet
                 expect(runLog).to.be.deep.equal([false,false,false]);
 
-                // this function has run
+                // set that we have run
                 runLog[0] = true;
 
-                // we are done, let's call the callback with a fake result
+                // call the callback
                 callback(undefined, "endFunction1");
             });
 
-            // let's add a second function to the task
-            task.addCallback("function2", function(callback) {
+            // add a second function
+            task.addCallback("function2", function(arg1, callback) {
 
                 // only the first function should have run
                 expect(runLog).to.be.deep.equal([true,false,false]);
 
-                // this function has run
+                // test the result of the previous function
+                expect(arg1).to.be.equal("endFunction1");
+
+                // set that we have run
                 runLog[1] = true;
 
-                // we are done, let's call the callback with a fake result
-                callback(undefined, "endFunction2");
+                // call the callback
+                callback(undefined, "endFunction2-1", "endFunction2-2");
             });
 
-            // let's add a third function
-            task.addCallback("function3", function(callback) {
+            // add a third function
+            task.addCallback("function3", function(arg1, arg2, callback){
 
                 // the other functions should have run
-                expect(runLog).to.be.deep.equal([true, true, false]);
+                expect(runLog).to.be.deep.equal([true,true,false]);
 
-                // let's run the function
+                // set that we have run
                 runLog[2] = true;
 
-                // let's call the callback
+                // test the arguments
+                expect(arg1).to.be.equal("endFunction2-1");
+                expect(arg2).to.be.equal("endFunction2-2");
+
+                // call the callback
                 callback(undefined, "endFunction3");
             });
 
-            // once done we make some checks
-            task.onFinish(function(params) {
+            // once done
+            task.onFinish(function(param){
 
                 // everything should have run
                 expect(runLog).to.be.deep.equal([true,true,true]);
 
-                // let's test the result of the first function
-                expect(params).to.have.property("function1", "endFunction1");
-
-                // let's check the result of the second function
-                expect(params).to.have.property("function2", "endFunction2");
-
-                // let's check the third result
-                expect(params).to.have.property("function3","endFunction3");
+                // make test
+                expect(param).to.be.equals("endFunction3");
 
                 // done
                 done();
             });
 
-            // let's register a callback in case of error
+            // in case of error
             task.onError(function (err) {
 
-                // the error should never run
+                // it should never run
                 expect(true).to.be.not.ok;
+
+                // done
+                done();
             });
 
-            // we can run the task
+            // run the task
             task.run();
         });
 
-        it("should return an error and never run the onFinish callback", function (done) {
+        it("should run onError function, and not onFinish", function (done) {
 
             // create the task
-            var task = flow.createSeries();
+            var task = flow.createWaterfall();
 
             // add a first function
             task.addCallback("function1", function(callback) {
@@ -121,17 +125,17 @@ describe("Series", function () {
             task.addCallback("function2", function(callback) {
 
                 // should never run
-                expect(true).to.be.not.ok;
+                expect(false).to.be.ok;
 
                 // call the callback
-                callback(undefined, "endFunction2");
+                callback(null, "endFunction2");
             });
 
             // add a third function
             task.addCallback("function3", function(callback){
 
                 // should never run
-                expect(true).to.be.not.ok;
+                expect(false).to.be.ok;
 
                 // call the callback
                 callback(null, "endFunction3");
@@ -141,7 +145,7 @@ describe("Series", function () {
             task.onFinish(function(params){
 
                 // should never run
-                expect(true).to.be.not.ok;
+                expect(false).to.be.ok;
 
                 // done
                 done();
@@ -153,7 +157,6 @@ describe("Series", function () {
                 // it should never run
                 expect(err).to.be.instanceOf(Error);
 
-                // done
                 done();
             });
 
