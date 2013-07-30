@@ -1,4 +1,3 @@
-
 // dependencies
 var Task = require('./Task.js');
 

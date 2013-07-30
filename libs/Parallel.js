@@ -4,13 +4,13 @@ var Task = require('./Task.js');
 /**
  * A series task that runs a sequence of async function in series.
  *
- * @class Series
+ * @class Parallel
  * @constructor
  */
-function Series () {
-    
+function Parallel () {
+
     /**
-     * The series
+     * The task
      *
      * @attribute task
      * @type {Task}
@@ -34,16 +34,20 @@ function Series () {
      * Run the task
      *
      * @method run
+     * @param {number} limit    the number of parallel tasks. Undefined if null
      */
-    this.run = function () {
+    this.run = function (limit) {
+
+        // limit can only be a number greater than 0
+        limit = limit == undefined || limit < 1 ? undefined : limit;
 
         // run the task as series
-        task.run('series');
+        task.run('parallel', limit);
     };
 
     /**
      * Register an on finish function.
-     * 
+     *
      * @method onFinish
      * @param {function} callback
      */
@@ -55,7 +59,7 @@ function Series () {
 
     /**
      * Register the function to be called in case of error.
-     * 
+     *
      * @method onError
      * @param {function} callback
      */
@@ -67,4 +71,4 @@ function Series () {
 }
 
 // export the constructor
-module.exports = Series;
+module.exports = Parallel;

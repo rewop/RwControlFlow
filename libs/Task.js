@@ -17,7 +17,7 @@ function Task () {
      * @type {function}
      * @default function(){}
      */
-    var onError = function () {};
+    var onError = new Function();
 
     /**
      * The function to be called when the task finishes the jobs
@@ -26,7 +26,7 @@ function Task () {
      * @type {function}
      * @default function(){}
      */
-    var onFinish = function () {};
+    var onFinish = new Function();
 
     /**
      * The callbacks of the task
@@ -54,7 +54,7 @@ function Task () {
             if (err)  return onError(err);
             
             // call the onfinish function without the error
-            onFinish(arguments[1]);
+            return onFinish(arguments[1]);
         };
     }
 
@@ -63,26 +63,28 @@ function Task () {
      *
      * @method run
      * @param {string} type     enumerator: waterfall|parallel
+     * @param {number} limit    number to limit the number of tasks in parallel
      */
-    this.run = function (type) {
+    this.run = function (type, limit) {
 
-        // what kind of flow
-        switch(type) {
-            case 'series': 
-                async.series(callbacks, makeOnFinish());
-                break;
+        // is it a series type?
+        if (type == 'series') return async.series(callbacks, makeOnFinish());
 
-            case 'waterfall':
-                async.waterfall(Objects.toArray(callbacks), makeOnFinish());
-                break;
+        // is it a waterfall type?
+        else if (type == 'waterfall')  return async.waterfall(Objects.toArray(callbacks), makeOnFinish());
 
-            case 'parallel':  
-                async.parallel(callbacks, makeOnFinish());
-                break;
+        // is it a parallel type?
+        else if (type == 'parallel') {
 
-            default: 
-                throw new Error("Invalid task type to run");
+            // do we have to apply a limit?
+            if (limit) return async.parallelLimit(callbacks, limit);
+
+            // run the parallel task without limit
+            return async.parallel(callbacks, makeOnFinish());
         }
+
+        // the type is unknown
+       throw new Error("Invalid task type to run");
     };
     
     /**
