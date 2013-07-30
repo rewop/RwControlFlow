@@ -1,66 +1,57 @@
+/**
+ * Script to test package.json
+ */
 
+/*jshint expr:true */
+/*global describe:false, it:false, beforeEach:false*/
+
+var expect = require("chai").expect;
 var fs = require("fs");
 var main;
+var package;
 
-/**
- * The tests
- */
-exports.Package = {
-    setUp : function (callback) {
+describe("Package checks", function () {
+
+    beforeEach(function(done) {
 
         // get the package
-        main = require("../controlflow.js");
+        fs.readFile("./package.json", function(err, data) {
 
-        // done setting up
-        callback();
-    },
-    'The module must have main.js file': function (test) {
-            
-        test.notStrictEqual(main, undefined, "Expected main to be defined");
+            // check for errors;
+            if (err) done(err);
 
-        //done
-        test.done();
-    },
+            // parse the file
+            package = JSON.parse(data.toString());
 
-    'The module must have a fullname': function (test) {
-        
-        test.notStrictEqual(main.fullname, undefined, "Expected fullname to be defined");
+            // get the main file
+            main = require("../"+package.main+".js");
 
-        // done
-        test.done();
-    },
+            // done
+            done();
+        });
+    });
 
-    'The module must have a version number': function (test) {
-        
-        test.notStrictEqual(main.version, undefined, "Expected version number to be defined");
+    it("Should have a main.js file", function () {
 
-        // done
-        test.done();
-    },
-    'The module must have the same name as quoted in package.json': function (test) {
+        // the main file should exist
+        expect(main).to.exist;
+    });
 
-        // read the package data
-        var data = fs.readFileSync("./package.json")
-        var json = JSON.parse(data.toString());
+    it("Should have a main with a version", function () {
 
-        // are the package names the same?
-        test.equals(json.name, main.fullname, "Expected module name to be the same in both places.");
+        // the version property should exist
+        expect(main).to.have.property("version");
+    });
 
-         // done
-        test.done();
-    },
+    it("Should have the same name of the main file", function () {
 
-    'The module must have the same version as quoted in package.json': function (test) {
+        // compare the name of the package with the name of the main file
+        expect(package.name).to.be.equal(main.fullname);
+    });
 
-        // read the package data
-        var data = fs.readFileSync("./package.json")
-        var json = JSON.parse(data.toString());
-        
-        // are the versions the same?
-        test.notStrictEqual(json.version, undefined, "Expected fs to be defined");
-        test.equals(main.version, json.version, "Expected the same module version!");
+    it("Should have the same version of the main", function () {
 
-         // done
-        test.done();
-    }
-};
+        // compare the versions
+        expect(package.version).to.be.equal(main.version);
+    });
+});
