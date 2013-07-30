@@ -77,7 +77,7 @@ function Task () {
         else if (type == 'parallel') {
 
             // do we have to apply a limit?
-            if (limit) return async.parallelLimit(callbacks, limit);
+            if (limit) return async.parallelLimit(callbacks, limit, makeOnFinish());
 
             // run the parallel task without limit
             return async.parallel(callbacks, makeOnFinish());
