@@ -1,3 +1,4 @@
 out/
 specifications/
 node_modules/
+.idea/
